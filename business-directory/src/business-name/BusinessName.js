@@ -5,8 +5,12 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function BusinessName(props, businessItem) {
-  const { register, handleSubmit, getValues } = useForm();
+function BusinessName() {
+  const API_URL =
+    "https://us4b9c5vv0.execute-api.us-east-1.amazonaws.com/prod/business";
+
+  const X_API_KEY = "CwJ8ohwPe43Ql07GCv7Gu3XECLT1b26Zav2DzzQL";
+  const { register, handleSubmit, getValues, reset } = useForm();
   const [open, setOpen] = useState();
   const [openDelete, setOpenDelete] = useState();
   const [openEdit, setOpenEdit] = useState();
@@ -14,8 +18,7 @@ function BusinessName(props, businessItem) {
 
   const [business, setBusiness] = useState();
 
-
-  let { businessId } = useParams();
+  const { businessId } = useParams();
 
   const handleClickButton = () => {
     setOpen((previousState) => !previousState);
@@ -26,7 +29,7 @@ function BusinessName(props, businessItem) {
     setOpenDelete((previousState) => !previousState);
   };
 
-  const handleClickEditButton = (personId) => {
+  const handleClickEditButton = () => {
     setOpenEdit((previousState) => !previousState);
   };
 
@@ -34,11 +37,15 @@ function BusinessName(props, businessItem) {
     setPersonIdSelected(personId);
   };
 
+  const headers = {
+    "Content-Type": "application/json",
+    "x-api-key": X_API_KEY,
+  };
+
   const handleDeletePerson = async () => {
-    await axios.delete(
-      `https://us4b9c5vv0.execute-api.us-east-1.amazonaws.com/prod/business/${businessId}/persons/${personIdSelected}`,
-      { headers }
-    );
+    await axios.delete(`${API_URL}/${businessId}/persons/${personIdSelected}`, {
+      headers,
+    });
     const newBusiness = [...business];
     const newBusinessFiltered = newBusiness.filter(
       (newBusinessItem) => newBusinessItem.personId !== personIdSelected
@@ -48,13 +55,20 @@ function BusinessName(props, businessItem) {
 
   const handleUpdatePerson = async () => {
     const payload = getValues();
+    console.log(personIdSelected);
+
     let headers = {
       "Content-Type": "application/json",
-      "x-api-key": "CwJ8ohwPe43Ql07GCv7Gu3XECLT1b26Zav2DzzQL",
+      "x-api-key": X_API_KEY,
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+      "Access-Control-Allow-Headers":
+        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
     };
 
     await axios.put(
-      `https://us4b9c5vv0.execute-api.us-east-1.amazonaws.com/prod/business/${businessId}/persons/${personIdSelected}/`,
+      `${API_URL}/${businessId}/persons/${personIdSelected}/`,
       payload,
       { headers }
     );
@@ -65,16 +79,10 @@ function BusinessName(props, businessItem) {
     setBusiness(newBusinessFiltered);
   };
 
-  const headers = {
-    "Content-Type": "application/json",
-    "x-api-key": "CwJ8ohwPe43Ql07GCv7Gu3XECLT1b26Zav2DzzQL",
-  };
-
   const setBusinessData = async () => {
-    const response = await axios.get(
-      `https://us4b9c5vv0.execute-api.us-east-1.amazonaws.com/prod/business/${businessId}/persons/`,
-      { headers }
-    );
+    const response = await axios.get(`${API_URL}/${businessId}/persons/`, {
+      headers,
+    });
     setBusiness(response && response.data ? response.data.persons : null);
   };
 
@@ -84,11 +92,7 @@ function BusinessName(props, businessItem) {
 
   const onSubmit = async () => {
     const payload = getValues();
-    await axios.post(
-      `https://us4b9c5vv0.execute-api.us-east-1.amazonaws.com/prod/business/${businessId}/persons`,
-      payload,
-      { headers }
-    );
+    await axios.post(`${API_URL}/${businessId}/persons`, payload, { headers });
     setBusinessData();
   };
 
@@ -97,6 +101,7 @@ function BusinessName(props, businessItem) {
       {...{
         register,
         open,
+        reset,
         handleClickButton,
         onSubmit,
         handleSubmit,

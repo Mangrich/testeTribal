@@ -9,6 +9,8 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
+
 import TableContainer from "@mui/material/TableContainer";
 import IconButton from "@mui/material/IconButton";
 import TableRow from "@mui/material/TableRow";
@@ -21,7 +23,7 @@ function BusinessView({
   handleDialogDelete,
   handleEditBusiness,
   handleDeleteBusiness,
-  handleClickRow,
+  handleClickInfo,
   register,
   handleSubmit,
   onSubmit,
@@ -57,13 +59,7 @@ function BusinessView({
               <TableBody>
                 {business
                   ? business.map((businessItem) => (
-                      <TableRow
-                        key={businessItem.businessId}
-                        hover
-                        onClick={() => {
-                          handleClickRow(businessItem.businessId);
-                        }}
-                      >
+                      <TableRow key={businessItem.businessId} hover>
                         <TableCell>{businessItem.name}</TableCell>
                         <TableCell>
                           <IconButton
@@ -83,6 +79,14 @@ function BusinessView({
                             }}
                           >
                             <DeleteOutlinedIcon />
+                          </IconButton>
+
+                          <IconButton
+                            onClick={() => {
+                              handleClickInfo(businessItem.businessId);
+                            }}
+                          >
+                            <InfoOutlined />
                           </IconButton>
                         </TableCell>
                       </TableRow>

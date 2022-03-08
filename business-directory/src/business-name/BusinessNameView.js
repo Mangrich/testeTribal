@@ -21,6 +21,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 function BusinessNameView({
   register,
   open,
+  reset,
   handleClickButton,
   handleDeletePerson,
   handleClickEditButton,
@@ -59,14 +60,15 @@ function BusinessNameView({
                       <TableCell>
                         <IconButton
                           onClick={() => {
-                            setPersonId(businessItem.personId);
                             handleClickEditButton();
+                            setPersonId(businessItem.personId);
                           }}
                         >
                           <EditOutlinedIcon />
                         </IconButton>
                         <IconButton
                           onClick={() => {
+                            reset();
                             handleClickDeleteButton(businessItem.personId);
                           }}
                         >
@@ -153,6 +155,7 @@ function BusinessNameView({
         <DialogActions>
           <Button
             onClick={() => {
+              reset();
               handleClickDeleteButton();
             }}
           >
@@ -162,6 +165,7 @@ function BusinessNameView({
             form="business-names"
             autoFocus
             onClick={() => {
+              reset();
               handleClickDeleteButton();
               handleDeletePerson();
             }}
@@ -236,7 +240,6 @@ function BusinessNameView({
               handleUpdatePerson();
             }}
             autoFocus
-            type="submit"
           >
             Save
           </Button>

@@ -27,7 +27,7 @@ function Business() {
     setOpenDelete((previousState) => !previousState);
   };
 
-  const handleClickRow = (businessId) => {
+  const handleClickInfo = (businessId) => {
     navigate(`/business/${businessId}`);
   };
 
@@ -69,13 +69,7 @@ function Business() {
     "x-api-key": "CwJ8ohwPe43Ql07GCv7Gu3XECLT1b26Zav2DzzQL",
   };
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, getValues, reset } = useForm();
   const onSubmit = async () => {
     const name = getValues();
     await axios.post(
@@ -94,7 +88,7 @@ function Business() {
         handleDialogDelete,
         handleEditBusiness,
         handleDeleteBusiness,
-        handleClickRow,
+        handleClickInfo,
         open,
         reset,
         openDelete,
